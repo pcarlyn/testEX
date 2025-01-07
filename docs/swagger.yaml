@@ -1,0 +1,194 @@
+basePath: /
+definitions:
+  models.ErrorResponse:
+    properties:
+      code:
+        type: string
+      error:
+        type: string
+    type: object
+  models.PostReferrer:
+    properties:
+      code:
+        type: string
+    type: object
+  models.PostResponse:
+    properties:
+      task:
+        type: string
+    type: object
+  models.ResponseUser:
+    properties:
+      active:
+        type: boolean
+      balance:
+        type: integer
+      cache:
+        type: boolean
+      id:
+        type: integer
+      isadmin:
+        type: boolean
+      last_visit:
+        type: string
+      referrer_id:
+        type: integer
+      registered_at:
+        type: string
+      status_id:
+        type: integer
+      telegram_id:
+        type: integer
+      user_name:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+info:
+  contact: {}
+  description: API Server for User Application
+  title: TestEx
+  version: "1.0"
+paths:
+  /users/{id}/referrer:
+    post:
+      consumes:
+      - application/json
+      description: Description
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Referrer Code
+        in: body
+        name: code
+        required: true
+        schema:
+          $ref: '#/definitions/models.PostReferrer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response
+          schema:
+            $ref: '#/definitions/models.ResponseUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Summary
+      tags:
+      - users
+  /users/{id}/status:
+    get:
+      consumes:
+      - application/json
+      description: Description
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response
+          schema:
+            $ref: '#/definitions/models.ResponseUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Summary
+      tags:
+      - users
+  /users/{id}/task/complete:
+    post:
+      consumes:
+      - application/json
+      description: Description
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.PostResponse'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response
+          schema:
+            $ref: '#/definitions/models.ResponseUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Summary
+      tags:
+      - users
+  /users/leaderboard:
+    get:
+      consumes:
+      - application/json
+      description: Description
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response
+          schema:
+            items:
+              $ref: '#/definitions/models.ResponseUser'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Summary
+      tags:
+      - users
+swagger: "2.0"
