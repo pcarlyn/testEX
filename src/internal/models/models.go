@@ -1,5 +1,7 @@
 package models
 
+import "github.com/golang-jwt/jwt/v5"
+
 type Status struct {
 	ID    int    `json:"id"`
 	Title string `json:"title"`
@@ -60,4 +62,15 @@ type ErrorResponse struct {
 
 type PostReferrer struct {
 	Code string `json:"code"`
+}
+
+type JwtCustomClaims struct {
+	Name     string `json:"name"`
+	Password string `json:"password"`
+	jwt.RegisteredClaims
+}
+
+type Login struct {
+	UserName string `json:"user_name"`
+	Password string `json:"password"`
 }

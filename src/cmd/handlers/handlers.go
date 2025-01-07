@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"testex/src/internal/models"
 	"testex/src/internal/utils/controller"
+	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 )
 
@@ -124,4 +126,40 @@ func PostReferrerCode(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, models.ErrorResponse{Code: "500", Error: "Internal Server Error"})
 	}
 	return c.JSON(statusCode, user)
+}
+
+// Login godoc
+// @Summary Login User
+// @Description Login with username and password to get a JWT token
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param login body models.Login true "Login credentials"
+// @Success 200 {object} echo.Map "Success Response"
+// @Failure 400 {object} models.ErrorResponse "Bad Request"
+// @Failure 404 {object} models.ErrorResponse "Not Found"
+// @Failure 500 {object} models.ErrorResponse "Server error"
+// @Router /login [post]
+func PostUserGetJWT(c echo.Context) error {
+	username := c.FormValue("username")
+	password := c.FormValue("password")
+
+	claims := &models.JwtCustomClaims{
+		Name:     username,
+		Password: password,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	t, err := token.SignedString([]byte("TestEx"))
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{
+		"token": t,
+	})
 }
